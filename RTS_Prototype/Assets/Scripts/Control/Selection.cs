@@ -30,6 +30,8 @@ public class Selection : MonoBehaviour
     public Color AMoveColor;
     public Color MoveColor;
 
+    [HideInInspector] public bool isPaused = false;
+
     private void Start()
     {
         //gui stuff
@@ -46,8 +48,11 @@ public class Selection : MonoBehaviour
 
     void Update()
     {
-        Checks();
+        if (isPaused) {
+            return;
+        }
 
+        Checks();
         Lmb();
         RmbMove();
     }
