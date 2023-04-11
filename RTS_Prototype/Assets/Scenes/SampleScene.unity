@@ -2206,6 +2206,10 @@ PrefabInstance:
       propertyPath: patrolEnd
       value: 
       objectReference: {fileID: 1875595027}
+    - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
+      propertyPath: basicAttackDmg
+      value: 45
+      objectReference: {fileID: 0}
     - target: {fileID: 8474471215854906751, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -4538,6 +4542,10 @@ PrefabInstance:
       propertyPath: patrolEnd
       value: 
       objectReference: {fileID: 1179618498}
+    - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
+      propertyPath: basicAttackDmg
+      value: 45
+      objectReference: {fileID: 0}
     - target: {fileID: 8474471215854906751, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -5637,26 +5645,25 @@ MonoBehaviour:
 
     -LMB and drag to box select
 
-    -RMB while
-    units are selected to move them
+    -RMB while units
+    are selected to move them
 
     -scroll to move camera up and down
 
     -move
     cursor to edge of screen to pan the camera
 
-    
 
-    -"A" and LMB to give
-    units the attack command
+
+    -"A" and LMB to give units
+    the attack command
 
     -"Tab" to select all units
 
-    -"R" to reset
-    the level
+    -"R" to reset the level
 
-    you can shift click individual units to add them to the selected
-    units'
+    you
+    can shift click individual units to add them to the selected units'
 --- !u!222 &538727416
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7800,6 +7807,10 @@ PrefabInstance:
     - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: attackRadius
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
+      propertyPath: basicAttackDmg
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: detectionRadius
@@ -12301,7 +12312,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Play
+  m_Text: Resume
 --- !u!222 &1183789515
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12615,9 +12626,17 @@ PrefabInstance:
       value: -8.557
       objectReference: {fileID: 0}
     - target: {fileID: 6808281047135112070, guid: 0289619a5cae2524db6f895469071c0c, type: 3}
+      propertyPath: health
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6808281047135112070, guid: 0289619a5cae2524db6f895469071c0c, type: 3}
       propertyPath: patrolEnd
       value: 
       objectReference: {fileID: 1151236515}
+    - target: {fileID: 6808281047135112070, guid: 0289619a5cae2524db6f895469071c0c, type: 3}
+      propertyPath: basicAttackDmg
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 6808281047135112070, guid: 0289619a5cae2524db6f895469071c0c, type: 3}
       propertyPath: chaseSpeedIncrease
       value: 5.5
@@ -14897,6 +14916,14 @@ PrefabInstance:
       value: 7.234
       objectReference: {fileID: 0}
     - target: {fileID: 6808281047135112070, guid: 0289619a5cae2524db6f895469071c0c, type: 3}
+      propertyPath: health
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6808281047135112070, guid: 0289619a5cae2524db6f895469071c0c, type: 3}
+      propertyPath: basicAttackDmg
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6808281047135112070, guid: 0289619a5cae2524db6f895469071c0c, type: 3}
       propertyPath: chaseSpeedIncrease
       value: 5.5
       objectReference: {fileID: 0}
@@ -15750,6 +15777,10 @@ PrefabInstance:
       propertyPath: patrolEnd
       value: 
       objectReference: {fileID: 1343278513}
+    - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
+      propertyPath: basicAttackDmg
+      value: 45
+      objectReference: {fileID: 0}
     - target: {fileID: 8474471215854906751, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -16136,6 +16167,10 @@ PrefabInstance:
       propertyPath: patrolEnd
       value: 
       objectReference: {fileID: 812471787}
+    - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
+      propertyPath: basicAttackDmg
+      value: 45
+      objectReference: {fileID: 0}
     - target: {fileID: 8474471215854906751, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: m_RootOrder
       value: 2

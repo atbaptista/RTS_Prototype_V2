@@ -70,7 +70,7 @@ public class Enemy2Attack : IState
         hitList = Physics.OverlapSphere(enemy2.transform.position, enemy2.explosionRadius, layerMask);
 
         foreach (Collider i in hitList) {
-            i.GetComponent<Selectable>().health -= 50;
+            i.GetComponent<Selectable>().health -= enemy2.basicAttackDmg;
         }
     }
 }
