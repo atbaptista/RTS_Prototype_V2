@@ -123,9 +123,12 @@ public class George : MonoBehaviour, Moveable
         if (selected.isSelected)
         {
             var line = selected.GetComponent<LineRenderer>();
-            if (selected.health <= 50)
+            if (selected.health <= 25)
             {
                 line.material.color = new Color(255, 0, 0);
+            }
+            else if (selected.health <= 75) {
+                line.material.color = new Color(255, 255, 0);
             }
             GetComponent<LineRenderer>().enabled = true;
         }
