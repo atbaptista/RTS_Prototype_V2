@@ -681,6 +681,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: George
       objectReference: {fileID: 0}
+    - target: {fileID: 4193982908876552699, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
+      propertyPath: attackSpeed
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 4449200470430217003, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -1700,6 +1704,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: George (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4193982908876552699, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
+      propertyPath: attackSpeed
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 4449200470430217003, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -2203,12 +2211,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1539144139}
     m_Modifications:
     - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
+      propertyPath: health
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: patrolEnd
       value: 
       objectReference: {fileID: 1875595027}
     - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: basicAttackDmg
       value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
+      propertyPath: chaseSpeedIncrease
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8474471215854906751, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: m_RootOrder
@@ -4539,12 +4555,20 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
+      propertyPath: health
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: patrolEnd
       value: 
       objectReference: {fileID: 1179618498}
     - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: basicAttackDmg
       value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
+      propertyPath: chaseSpeedIncrease
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8474471215854906751, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: m_RootOrder
@@ -10114,6 +10138,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: George (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 4193982908876552699, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
+      propertyPath: attackSpeed
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 4449200470430217003, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -15130,6 +15158,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: George (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4193982908876552699, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
+      propertyPath: attackSpeed
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 4449200470430217003, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -15774,12 +15806,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1539144139}
     m_Modifications:
     - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
+      propertyPath: health
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: patrolEnd
       value: 
       objectReference: {fileID: 1343278513}
     - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: basicAttackDmg
       value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
+      propertyPath: chaseSpeedIncrease
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8474471215854906751, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: m_RootOrder
@@ -16164,12 +16204,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1539144139}
     m_Modifications:
     - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
+      propertyPath: health
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: patrolEnd
       value: 
       objectReference: {fileID: 812471787}
     - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: basicAttackDmg
       value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 8219605703793445483, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
+      propertyPath: chaseSpeedIncrease
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8474471215854906751, guid: 6a3311a44e487024d8a5a14716b49457, type: 3}
       propertyPath: m_RootOrder
@@ -16333,6 +16381,10 @@ PrefabInstance:
     - target: {fileID: 3960191216209766801, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
       propertyPath: m_Name
       value: George
+      objectReference: {fileID: 0}
+    - target: {fileID: 4193982908876552699, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
+      propertyPath: attackSpeed
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 4449200470430217003, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
       propertyPath: m_RootOrder
@@ -17910,6 +17962,10 @@ PrefabInstance:
     - target: {fileID: 3960191216209766801, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
       propertyPath: m_Name
       value: George (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4193982908876552699, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
+      propertyPath: attackSpeed
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 4449200470430217003, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
       propertyPath: m_RootOrder
