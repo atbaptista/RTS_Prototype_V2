@@ -57,6 +57,7 @@ public class Selection : MonoBehaviour
         RmbMove();
     }
 
+#region 
     private void Checks() {
         if (Input.GetKeyDown(KeyCode.A)) {
             _aPressed = true;
@@ -274,4 +275,5 @@ public class Selection : MonoBehaviour
         }
         prevSelected.Clear();
     }
+#endregion
 }
