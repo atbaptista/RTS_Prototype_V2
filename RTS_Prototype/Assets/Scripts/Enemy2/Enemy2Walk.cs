@@ -21,11 +21,11 @@ public class Enemy2Walk : IState
 
     public void Execute()
     {
-        
+
     }
 
     public void Exit()
     {
-        
+
     }
 }

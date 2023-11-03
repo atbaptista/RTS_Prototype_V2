@@ -8,12 +8,6 @@ public class Initialize : MonoBehaviour
     void Start()
     {
         var navMesh = this.GetComponent<NavMeshAgent>();
-        navMesh.avoidancePriority = Random.Range(0,99);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        navMesh.avoidancePriority = Random.Range(0, 99);
     }
 }

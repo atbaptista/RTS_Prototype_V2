@@ -22,10 +22,11 @@ public class GeorgeAttack : IState
     public void Execute()
     {
         //find closest target only if is not commanded to attack one already
-        if (!george.isAMoveOnTarget) {
+        if (!george.isAMoveOnTarget)
+        {
             FindClosestEnemy();
         }
-        
+
 
         //enable or disable the selection circle
         //george.drawSelectionCircle();
@@ -40,8 +41,8 @@ public class GeorgeAttack : IState
         {
             george.georgeMachine.ChangeState(george.dieState);
         }
-        else if (george.closestEnemy.Equals(null) || 
-            george.closestEnemy.GetComponent<Selectable>().unitType == 
+        else if (george.closestEnemy.Equals(null) ||
+            george.closestEnemy.GetComponent<Selectable>().unitType ==
             Selectable.unitTypes.Dead) //if thing died
         {
             george.georgeMachine.ChangeState(george.idleState);
@@ -50,9 +51,10 @@ public class GeorgeAttack : IState
         {
             george.georgeMachine.ChangeState(george.walkState);
         }
-        else if((george.transform.position - 
-            george.closestEnemy.transform.position).magnitude > 
-            george.detectionRadius){ //if out range
+        else if ((george.transform.position -
+            george.closestEnemy.transform.position).magnitude >
+            george.detectionRadius)
+        { //if out range
 
             //change to chase state later
             george.georgeMachine.ChangeState(george.idleState);
@@ -66,7 +68,7 @@ public class GeorgeAttack : IState
         george.isAMove = false;
         george.anim.SetBool("doneAttacking", true);
         george.anim.ResetTrigger("isAttack");
-        
+
     }
 
     private void FindClosestEnemy()
@@ -99,7 +101,7 @@ public class GeorgeAttack : IState
             george.transform.LookAt(george.closestEnemy.transform);
 
             //shoot target
-            
+
             george.closestEnemy.GetComponent<Selectable>().health -= george.basicAttackDmg;
 
             //make the vector higher up
@@ -107,7 +109,7 @@ public class GeorgeAttack : IState
                 george.transform.position.z);
             Vector3 newE = new Vector3(george.closestEnemy.transform.position.x,
                 george.closestEnemy.transform.position.y + 2f, george.closestEnemy.transform.position.z);
-           
+
             DrawLine(newS, newE);
             /*george.Shoot(george.closestEnemy.gameObject);*/
         }

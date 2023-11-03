@@ -26,7 +26,7 @@ public class Enemy2Patrol : IState
 
     public void Exit()
     {
-        
+
     }
 
 
@@ -103,7 +103,7 @@ public class Enemy2Patrol : IState
     private bool enemiesDetected()
     {
         //update units in range list
-        enemy2.getUnitsInRange(enemy2.unitsInRange);
+        enemy2.GetUnitsInRange(enemy2.unitsInRange);
 
         //return true if any robots are detected
         foreach (Collider i in enemy2.unitsInRange)

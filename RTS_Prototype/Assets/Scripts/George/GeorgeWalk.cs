@@ -7,9 +7,9 @@ public class GeorgeWalk : IState
     George george;
     private Vector3 prevDest;
 
-    public GeorgeWalk(George george) 
-    { 
-        this.george = george; 
+    public GeorgeWalk(in George george)
+    {
+        this.george = george;
     }
 
     public void Enter()
@@ -38,24 +38,36 @@ public class GeorgeWalk : IState
         }
 
         //if a-move on target
-        if (george.isAMoveOnTarget) {
+        if (george.isAMoveOnTarget)
+        {
             george.georgeMachine.ChangeState(george.aMoveTargetState);
             return;
         }
 
-        //if a-moved, update closest enemy and change to amovetargetstate if enemy in range
-        if (george.isAMove) {
-            if (EnemyInRange()) {
+        // if a-moved, update closest enemy and change to amovetargetstate if enemy in range
+        if (george.isAMove)
+        {
+            if (EnemyInRange())
+            {
                 FindClosestEnemy();
                 george.georgeMachine.ChangeState(george.aMoveTargetState);
                 return;
             }
         }
 
-        //within stopping distance
+        // within stopping distance
         if (distanceToDest.magnitude < george.stoppingDistance)
         {
-            george.georgeMachine.ChangeState(george.idleState);
+            // check if there are still destinations queued
+            if (george.MoveQueue.Count > 0)
+            {
+                george.dest = george.MoveQueue.Dequeue();
+            }
+            else
+            {
+                // done moving, go to idle state
+                george.georgeMachine.ChangeState(george.idleState);
+            }
         }
     }
 
@@ -67,30 +79,37 @@ public class GeorgeWalk : IState
         george.anim.SetBool("isWalking", false);
     }
 
-    private bool EnemyInRange() {
+    private bool EnemyInRange()
+    {
         //update the unitsInRange list
-        george.getEnemiesInRange(george.unitsInRange);
+        george.GetEnemiesInRange(ref george.unitsInRange);
 
         //change state to attack if enemies are detected
-        foreach (Collider i in george.unitsInRange) {
+        foreach (Collider i in george.unitsInRange)
+        {
             if (i.GetComponent<Selectable>().unitType.Equals
-                (Selectable.unitTypes.Dinosaur)) {
+                (Selectable.unitTypes.Dinosaur))
+            {
                 return true;
             }
         }
         return false;
     }
 
-    private void FindClosestEnemy() {
+    private void FindClosestEnemy()
+    {
         //detection radius is the max distance objects will be, add 10 to get edge cases
         float closestDistance = george.detectionRadius + 10f;
 
-        foreach (Collider i in george.unitsInRange) {
+        foreach (Collider i in george.unitsInRange)
+        {
             //check type of unit
-            if (i != null && i.GetComponent<Selectable>().unitType.Equals(Selectable.unitTypes.Dinosaur)) {
+            if (i != null && i.GetComponent<Selectable>().unitType.Equals(Selectable.unitTypes.Dinosaur))
+            {
                 //find closest dinosaur
                 Vector3 distanceBetwixt = i.transform.position - george.transform.position;
-                if (distanceBetwixt.magnitude < closestDistance) {
+                if (distanceBetwixt.magnitude < closestDistance)
+                {
                     george.closestEnemy = i;
                     closestDistance = distanceBetwixt.magnitude;
                 }

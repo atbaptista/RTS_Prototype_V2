@@ -21,7 +21,7 @@ public class Enemy1Idle : IState
 
     public void Execute()
     {
-        decideState();
+        DecideState();
     }
 
     public void Exit()
@@ -29,7 +29,7 @@ public class Enemy1Idle : IState
 
     }
 
-    private void decideState()
+    private void DecideState()
     {
         if (enemy1.selected.health <= 0) //dead
         {
@@ -48,7 +48,7 @@ public class Enemy1Idle : IState
     private bool enemiesDetected()
     {
         //update units in range list
-        enemy1.getUnitsInRange(enemy1.unitsInRange);
+        enemy1.GetUnitsInRange(enemy1.unitsInRange);
 
         //return true if any robots are detected
         foreach (Collider i in enemy1.unitsInRange)

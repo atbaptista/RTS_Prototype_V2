@@ -15,14 +15,14 @@ public class Enemy2Chase : IState
     {
         enemy2.enemy1NavMeshAgent.isStopped = false;
         enemy2.anim.SetInteger("animState", 2);
-        enemy2.enemy1NavMeshAgent.speed += enemy2.chaseSpeedIncrease; 
-    }   
+        enemy2.enemy1NavMeshAgent.speed += enemy2.chaseSpeedIncrease;
+    }
 
     public void Execute()
     {
         FindClosestEnemy();
 
-        decideAction();
+        DecideAction();
     }
 
     public void Exit()
@@ -34,7 +34,7 @@ public class Enemy2Chase : IState
 
 
 
-    private void decideAction()
+    private void DecideAction()
     {
         Vector3 distanceBetwixt = Vector3.zero;
 
@@ -67,7 +67,7 @@ public class Enemy2Chase : IState
     private void FindClosestEnemy()
     {
         //update enemies near list
-        enemy2.getUnitsInRange(enemy2.unitsInRange);
+        enemy2.GetUnitsInRange(enemy2.unitsInRange);
 
         //detection radius is the max distance objects will be, add 10 to get edge cases
         float closestDistance = enemy2.detectionRadius + 10f;

@@ -27,11 +27,11 @@ public class Enemy2Die : IState
 
     public void Execute()
     {
-        
+
     }
 
     public void Exit()
     {
-        
+
     }
 }

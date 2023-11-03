@@ -33,7 +33,7 @@ public class CameraMovement : MonoBehaviour
         }
 
         //mouse at top of screen
-        if(mousePos.y >= 0.95 * Screen.height)
+        if (mousePos.y >= 0.95 * Screen.height)
         {
             transform.Translate(Vector3.forward * Time.deltaTime * scrollSpeed, Space.World);
         }
