@@ -16378,6 +16378,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 154787068}
     m_Modifications:
+    - target: {fileID: 686814278812446966, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 686814278812446966, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.02
+      objectReference: {fileID: 0}
     - target: {fileID: 3960191216209766801, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
       propertyPath: m_Name
       value: George
