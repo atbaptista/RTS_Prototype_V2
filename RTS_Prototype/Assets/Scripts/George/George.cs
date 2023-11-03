@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
 
-public class George : MonoBehaviour, Moveable 
+public class George : MonoBehaviour, Moveable
 {
     #region header
 
@@ -65,7 +65,7 @@ public class George : MonoBehaviour, Moveable
 
     void Update()
     {
-        drawSelectionCircle();
+        DrawSelectionCircle();
         georgeMachine.Update();
     }
 
@@ -82,23 +82,26 @@ public class George : MonoBehaviour, Moveable
         isAMove = false;
     }
 
-    public void AMove(RaycastHit hit) {
+    public void AMove(RaycastHit hit)
+    {
         dest = hit.point;
         //check if input is floor
-        if (hit.collider.gameObject.layer != LayerMask.NameToLayer("Selectable")) {
+        if (hit.collider.gameObject.layer != LayerMask.NameToLayer("Selectable"))
+        {
             isDestSet = true;
             isAMove = true;
             return;
         }
         //check if dino
-        if (hit.collider.GetComponent<Selectable>().unitType == Selectable.unitTypes.Dinosaur) {
+        if (hit.collider.GetComponent<Selectable>().unitType == Selectable.unitTypes.Dinosaur)
+        {
             isAMove = true;
             isAMoveOnTarget = true;
             closestEnemy = hit.collider;
         }
     }
 
-    public void getEnemiesInRange(List<Collider> enemiesList)
+    public void GetEnemiesInRange(List<Collider> enemiesList)
     {
         Collider[] newList;
 
@@ -111,13 +114,13 @@ public class George : MonoBehaviour, Moveable
         //get all objects near 
         newList = Physics.OverlapSphere(transform.position, detectionRadius, layerMask);
 
-        foreach(Collider i in newList)
+        foreach (Collider i in newList)
         {
             enemiesList.Add(i);
         }
     }
 
-    public void drawSelectionCircle()
+    public void DrawSelectionCircle()
     {
         //enable or disable the selection circle
         if (selected.isSelected)
@@ -127,7 +130,8 @@ public class George : MonoBehaviour, Moveable
             {
                 line.material.color = new Color(255, 0, 0);
             }
-            else if (selected.health <= 75) {
+            else if (selected.health <= 75)
+            {
                 line.material.color = new Color(255, 255, 0);
             }
             GetComponent<LineRenderer>().enabled = true;

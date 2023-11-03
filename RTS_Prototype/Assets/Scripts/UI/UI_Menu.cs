@@ -11,54 +11,65 @@ public class UI_Menu : MonoBehaviour
     private bool _paused = false;
     private bool _hActive = false;
 
-    private void Start() {
+    private void Start()
+    {
         PlayGame();
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
-            if (!_paused) {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (!_paused)
+            {
                 PauseGame();
-            } else {
+            }
+            else
+            {
                 PlayGame();
             }
         }
     }
 
-    public void PauseGame() {
+    public void PauseGame()
+    {
         Time.timeScale = 0f;
         _pMenu.SetActive(true);
-        _paused= true;
+        _paused = true;
         SelectionCode.isPaused = true;
 
         _hActive = false;
         _hMenu.SetActive(false);
     }
 
-    public void PlayGame() {
-        Time.timeScale = 1f;    
+    public void PlayGame()
+    {
+        Time.timeScale = 1f;
         _pMenu.SetActive(false);
-        _paused= false;
+        _paused = false;
         SelectionCode.isPaused = false;
 
         _hActive = false;
         _hMenu.SetActive(false);
     }
 
-    public void Quit() {
+    public void Quit()
+    {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public void HelpButton() {
-        if (_hActive) {
+    public void HelpButton()
+    {
+        if (_hActive)
+        {
             _hMenu.SetActive(false);
             _hActive = false;
         }
-        else {
+        else
+        {
             _hMenu.SetActive(true);
             _hActive = true;
         }
-        
+
     }
 }

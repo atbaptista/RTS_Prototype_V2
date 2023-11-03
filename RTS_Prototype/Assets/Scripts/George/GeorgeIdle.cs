@@ -6,9 +6,9 @@ public class GeorgeIdle : IState
 {
     George george;
 
-    public GeorgeIdle(George george) 
-    { 
-        this.george = george; 
+    public GeorgeIdle(George george)
+    {
+        this.george = george;
     }
 
     public void Enter()
@@ -28,7 +28,7 @@ public class GeorgeIdle : IState
 
     public void Exit()
     {
-        
+
     }
 
     private void ChooseAction()
@@ -41,13 +41,14 @@ public class GeorgeIdle : IState
         {
             george.georgeMachine.ChangeState(george.walkState);
         }
-        else if (george.isAMoveOnTarget) { //check if the attack move selected a target
+        else if (george.isAMoveOnTarget)
+        { //check if the attack move selected a target
             george.georgeMachine.ChangeState(george.aMoveTargetState);
         }
         else //check if enemies are near
         {
             //update the unitsInRange list
-            george.getEnemiesInRange(george.unitsInRange);
+            george.GetEnemiesInRange(george.unitsInRange);
 
             //change state to attack if enemies are detected
             foreach (Collider i in george.unitsInRange)

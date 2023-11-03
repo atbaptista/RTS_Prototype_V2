@@ -24,19 +24,19 @@ public class Enemy1Attack : IState
 
     public void Execute()
     {
-        decideState();
+        DecideState();
 
         Attack();
     }
 
     public void Exit()
     {
-        
+
     }
 
 
 
-    private void decideState()
+    private void DecideState()
     {
         if (enemy1.selected.health <= 0) //dead
         {

@@ -20,19 +20,19 @@ public class Enemy2Attack : IState
 
     public void Execute()
     {
-        decideState();
+        DecideState();
 
         Attack();
     }
 
     public void Exit()
     {
-        
+
     }
 
 
 
-    private void decideState()
+    private void DecideState()
     {
         if (enemy2.selected.health <= 0) //dead
         {
@@ -50,17 +50,18 @@ public class Enemy2Attack : IState
     private void Attack()
     {
         Debug.Log("attack2 method called, BOOM!!!!!!");
-     
+
         DamageUnits();
 
         //spawn explosion effect
-        
+
 
         //die
         enemy2.ExplodeDeath();
     }
 
-    public void DamageUnits() {
+    public void DamageUnits()
+    {
         Collider[] hitList;
 
         //Selectable layermask (7)
@@ -69,7 +70,8 @@ public class Enemy2Attack : IState
         //get all objects near 
         hitList = Physics.OverlapSphere(enemy2.transform.position, enemy2.explosionRadius, layerMask);
 
-        foreach (Collider i in hitList) {
+        foreach (Collider i in hitList)
+        {
             i.GetComponent<Selectable>().health -= enemy2.basicAttackDmg;
         }
     }

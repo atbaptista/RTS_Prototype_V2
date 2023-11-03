@@ -18,12 +18,6 @@ public class Changelevel : MonoBehaviour
         Cursor.SetCursor(crosshair, cursorOffset, CursorMode.Auto);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void StartGame()
     {
         SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
