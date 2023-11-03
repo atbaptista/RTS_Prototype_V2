@@ -48,7 +48,7 @@ public class GeorgeIdle : IState
         else //check if enemies are near
         {
             //update the unitsInRange list
-            george.GetEnemiesInRange(george.unitsInRange);
+            george.GetEnemiesInRange(ref george.unitsInRange);
 
             //change state to attack if enemies are detected
             foreach (Collider i in george.unitsInRange)

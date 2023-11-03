@@ -7,25 +7,26 @@ public class George : MonoBehaviour, Moveable
 {
     #region header
 
-    //components
+    // components
     [Header("components")]
     public Camera cam;
     public NavMeshAgent playerNavMeshAgent = null;
     [HideInInspector] public Animator anim;
     [HideInInspector] public Selectable selected;
 
-    //variables
+    // variables
     [Header("variables")]
     [HideInInspector] public Vector3 dest;
     [HideInInspector] public List<Collider> unitsInRange = new List<Collider>();
     [HideInInspector] public Collider closestEnemy = null;
     [HideInInspector] public bool isDestSet = false;
+    [HideInInspector] public Queue<Vector3> MoveQueue = new Queue<Vector3>();
     public Material laserMat;
     public float detectionRadius = 5f;
     public float stoppingDistance = 0.15f;
     public float attackSpeed = 0.5f;
     public float basicAttackDmg = 20f;
-    //should prob make this health private
+    // should prob make this health private
     public float health = 100f;
     public float deathDeletionTime = 1.5f;
 
@@ -82,6 +83,16 @@ public class George : MonoBehaviour, Moveable
         isAMove = false;
     }
 
+    public void QueueMovement(Vector3 destination)
+    {
+        MoveQueue.Enqueue(destination);
+    }
+
+    public void ClearMoveQueue()
+    {
+        MoveQueue.Clear();
+    }
+
     public void AMove(RaycastHit hit)
     {
         dest = hit.point;
@@ -101,7 +112,7 @@ public class George : MonoBehaviour, Moveable
         }
     }
 
-    public void GetEnemiesInRange(List<Collider> enemiesList)
+    public void GetEnemiesInRange(ref List<Collider> enemiesList)
     {
         Collider[] newList;
 

@@ -29,8 +29,6 @@ public abstract class Enemy : MonoBehaviour
     public float chaseSpeedIncrease = 5f;
     [SerializeField] private float health = 100f;
 
-
-
     // state machine
     [HideInInspector] public StateMachine enemy1Machine = new StateMachine();
     /*    [HideInInspector] public IState idleState;

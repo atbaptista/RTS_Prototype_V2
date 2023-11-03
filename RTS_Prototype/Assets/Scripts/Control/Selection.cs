@@ -81,6 +81,14 @@ public class Selection : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+        if(Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            _shiftPressed = true;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            _shiftPressed = false;
+        }
 
         //cursor
         if (!_aPressed)
@@ -250,10 +258,21 @@ public class Selection : MonoBehaviour
                 continue;
             }
 
+            // should check if it's Moveable if stationary units are ever added
             isRobot = i.GetComponent<Selectable>().unitType.Equals(Selectable.unitTypes.Robot);
             if (isRobot)
             {
-                i.GetComponent<Moveable>().GoTo(hit.point);
+                if (_shiftPressed)
+                {
+                    // add location to the move queue 
+                    i.GetComponent<Moveable>().QueueMovement(hit.point);
+                }
+                else
+                {
+                    // clear move queue and move to the location
+                    i.GetComponent<Moveable>().ClearMoveQueue();
+                    i.GetComponent<Moveable>().GoTo(hit.point);
+                }
             }
         }
     }
