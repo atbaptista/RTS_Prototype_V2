@@ -6,11 +6,11 @@ public class Selectable : MonoBehaviour
 {
     public bool isSelected = false;
     [HideInInspector] public float health;
-    [HideInInspector] public enum unitTypes {Robot, Dinosaur, Dead};
+    [HideInInspector] public enum unitTypes { Robot, Dinosaur, Dead };
     [HideInInspector] public unitTypes unitType;
 
 
-    public void DrawCircle(GameObject selected, float radius, 
+    public void DrawCircle(GameObject selected, float radius,
         float lineWidth, Color color)
     {
         var segments = 360;
