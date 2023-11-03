@@ -6,7 +6,7 @@ public class GeorgeIdle : IState
 {
     George george;
 
-    public GeorgeIdle(George george)
+    public GeorgeIdle(in George george)
     {
         this.george = george;
     }

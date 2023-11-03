@@ -7,7 +7,7 @@ public class GeorgeWalk : IState
     George george;
     private Vector3 prevDest;
 
-    public GeorgeWalk(George george)
+    public GeorgeWalk(in George george)
     {
         this.george = george;
     }
@@ -44,7 +44,7 @@ public class GeorgeWalk : IState
             return;
         }
 
-        //if a-moved, update closest enemy and change to amovetargetstate if enemy in range
+        // if a-moved, update closest enemy and change to amovetargetstate if enemy in range
         if (george.isAMove)
         {
             if (EnemyInRange())
@@ -55,10 +55,19 @@ public class GeorgeWalk : IState
             }
         }
 
-        //within stopping distance
+        // within stopping distance
         if (distanceToDest.magnitude < george.stoppingDistance)
         {
-            george.georgeMachine.ChangeState(george.idleState);
+            // check if there are still destinations queued
+            if (george.MoveQueue.Count > 0)
+            {
+                george.dest = george.MoveQueue.Dequeue();
+            }
+            else
+            {
+                // done moving, go to idle state
+                george.georgeMachine.ChangeState(george.idleState);
+            }
         }
     }
 

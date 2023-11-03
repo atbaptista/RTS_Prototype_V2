@@ -76,16 +76,22 @@ public class George : MonoBehaviour, Moveable
         Destroy(this.gameObject, deathDeletionTime);
     }
 
-    public void GoTo(Vector3 destination)
+    public void GoTo()
     {
-        dest = destination;
+        dest = MoveQueue.Dequeue();
         isDestSet = true;
         isAMove = false;
+    }
+
+    public bool isMovingToDest()
+    {
+        return isDestSet;
     }
 
     public void QueueMovement(Vector3 destination)
     {
         MoveQueue.Enqueue(destination);
+        print(MoveQueue.Count);
     }
 
     public void ClearMoveQueue()

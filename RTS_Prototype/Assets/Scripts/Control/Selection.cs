@@ -264,14 +264,28 @@ public class Selection : MonoBehaviour
             {
                 if (_shiftPressed)
                 {
-                    // add location to the move queue 
-                    i.GetComponent<Moveable>().QueueMovement(hit.point);
+                    // first destination, start moving right away
+                    if (!i.GetComponent<Moveable>().isMovingToDest())
+                    {
+                        i.GetComponent<Moveable>().QueueMovement(hit.point);
+                        i.GetComponent<Moveable>().GoTo();
+                        print("first move");
+                    }
+                    else
+                    {
+                        // add location to the move queue 
+                        i.GetComponent<Moveable>().QueueMovement(hit.point);
+                        print("queue move");
+                    }
+                    
                 }
                 else
                 {
                     // clear move queue and move to the location
                     i.GetComponent<Moveable>().ClearMoveQueue();
-                    i.GetComponent<Moveable>().GoTo(hit.point);
+                    i.GetComponent<Moveable>().QueueMovement(hit.point);
+                    i.GetComponent<Moveable>().GoTo();
+                    print("move");
                 }
             }
         }
