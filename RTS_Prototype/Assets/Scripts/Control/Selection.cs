@@ -148,6 +148,8 @@ public class Selection : MonoBehaviour
                 if (isRobot)
                 {
                     // if ever add different kinds of units move all the amove checks to moveable component
+                    // clear the movement queue, since this will override that 
+                    i.GetComponent<Moveable>().ClearMoveQueue();
                     i.GetComponent<George>().AMove(hit);
                 }
             }
@@ -269,15 +271,12 @@ public class Selection : MonoBehaviour
                     {
                         i.GetComponent<Moveable>().QueueMovement(hit.point);
                         i.GetComponent<Moveable>().GoTo();
-                        print("first move");
                     }
                     else
                     {
                         // add location to the move queue 
                         i.GetComponent<Moveable>().QueueMovement(hit.point);
-                        print("queue move");
                     }
-                    
                 }
                 else
                 {
@@ -285,7 +284,6 @@ public class Selection : MonoBehaviour
                     i.GetComponent<Moveable>().ClearMoveQueue();
                     i.GetComponent<Moveable>().QueueMovement(hit.point);
                     i.GetComponent<Moveable>().GoTo();
-                    print("move");
                 }
             }
         }
