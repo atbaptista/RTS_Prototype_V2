@@ -283,6 +283,7 @@ public class Selection : MonoBehaviour
         boxImage.sizeDelta = new Vector2(sizeX, sizeY);
     }
 
+    // Spawns a glowing ring at point with color 
     private void CreateCommandFX(Vector3 point, Color FXColor)
     {
         point.y = 0;
@@ -290,6 +291,7 @@ public class Selection : MonoBehaviour
         tempFX.GetComponent<CommandFX>().CircleColor = FXColor;
     }
 
+    // Raycasts from the mouse position on the screen to a point in the game space
     private RaycastHit RaycastMousePosition(int layerMask)
     {
         RaycastHit hit;
@@ -307,17 +309,19 @@ public class Selection : MonoBehaviour
 
     private void SelectEverything()
     {
-        // get all things in selectable layermask
-        Collider[] all = Physics.OverlapSphere(cam.transform.position, 1000f, 1 << 7);
-        for (int i = 0; i < all.Length; i++)
+        foreach (Selectable i in FindObjectsOfType<Selectable>())
         {
-            if (all[i].gameObject.GetComponent<Selectable>().unitType == Selectable.unitTypes.Robot)
+            if (!i.gameObject.activeInHierarchy)
+            {
+                continue;
+            }
+            if (i.GetComponent<Selectable>().unitType == Selectable.unitTypes.Robot)
             {
                 // if not already selected, select it
-                if (!all[i].gameObject.GetComponent<Selectable>().isSelected)
+                if (!i.GetComponent<Selectable>().isSelected)
                 {
-                    all[i].gameObject.GetComponent<Selectable>().isSelected = true;
-                    prevSelected.AddLast(all[i].gameObject);
+                    i.GetComponent<Selectable>().isSelected = true;
+                    prevSelected.AddLast(i.gameObject);
                 }
             }
         }
