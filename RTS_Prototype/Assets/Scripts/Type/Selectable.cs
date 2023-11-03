@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Selectable : MonoBehaviour
 {
-     public bool isSelected = false;
+    public bool isSelected = false;
     [HideInInspector] public float health;
     [HideInInspector] public enum unitTypes {Robot, Dinosaur, Dead};
     [HideInInspector] public unitTypes unitType;
