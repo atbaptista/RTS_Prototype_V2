@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
+using UnityEditor.SearchService;
+using UnityEngine.Experimental.AI;
+using System.IO.Pipes;
 
 public class George : MonoBehaviour, Moveable
 {
@@ -11,6 +14,7 @@ public class George : MonoBehaviour, Moveable
     [Header("components")]
     public Camera cam;
     public NavMeshAgent playerNavMeshAgent = null;
+    public LineRenderer pathLineRenderer;
     [HideInInspector] public Animator anim;
     [HideInInspector] public Selectable selected;
 
@@ -45,22 +49,27 @@ public class George : MonoBehaviour, Moveable
 
     void Start()
     {
-        //create states
+        // create states
         idleState = new GeorgeIdle(this);
         walkState = new GeorgeWalk(this);
         attackState = new GeorgeAttack(this);
         dieState = new GeorgeDie(this);
         aMoveTargetState = new GeorgeAMoveTarget(this);
 
-        //get components
+        // get components
         anim = GetComponent<Animator>();
         selected = GetComponent<Selectable>();
         selected.unitType = Selectable.unitTypes.Robot;
         selected.health = health;
 
-        //draw green circle, start in idle state
+        // draw green circle 
         Color color = new Color(0, 255, 0);
         selected.DrawCircle(this.gameObject, 1.2f, 0.09f, color);
+
+        // set dest to current position so when pressing shift and showing the path it doesnt point to origin
+        dest = this.transform.position;
+
+        // start in idle state
         georgeMachine.ChangeState(idleState);
     }
 
@@ -157,6 +166,35 @@ public class George : MonoBehaviour, Moveable
         {
             GetComponent<LineRenderer>().enabled = false;
         }
+    }
+
+    public void DrawMovementPath()
+    {
+        pathLineRenderer.enabled = true;
+        NavMeshPath path = new NavMeshPath();
+        List<Vector3> allCorners = new List<Vector3>();
+
+        // get the path from current position to current destination
+        NavMesh.CalculatePath(this.transform.position, dest, NavMesh.AllAreas, path);
+        allCorners.AddRange(new List<Vector3>(path.corners));
+
+        // get the path from the destination to the next destination and so on
+        Vector3 prevLoc = dest;
+        foreach (Vector3 loc in MoveQueue)
+        {
+            NavMesh.CalculatePath(prevLoc, loc, NavMesh.AllAreas, path);
+            allCorners.AddRange(new List<Vector3>(path.corners));
+            prevLoc = loc;
+            path.ClearCorners();
+        }
+
+        pathLineRenderer.positionCount = allCorners.Count;
+        pathLineRenderer.SetPositions(allCorners.ToArray());
+    }
+
+    public void StopDrawMovementPath()
+    {
+        pathLineRenderer.enabled = false;
     }
 
     void OnDrawGizmosSelected()
