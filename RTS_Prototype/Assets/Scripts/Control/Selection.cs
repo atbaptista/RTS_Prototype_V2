@@ -88,6 +88,21 @@ public class Selection : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             _shiftPressed = false;
+            foreach (GameObject i in prevSelected)
+            {
+                if (i == null)
+                    continue;
+                i.GetComponent<George>().StopDrawMovementPath();
+            }
+        }
+        if (_shiftPressed)
+        {
+            foreach (GameObject i in prevSelected)
+            {
+                if (i == null)
+                    continue;
+                i.GetComponent<George>().DrawMovementPath();
+            }
         }
 
         //cursor
