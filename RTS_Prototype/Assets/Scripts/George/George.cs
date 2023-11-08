@@ -10,7 +10,6 @@ public class George : MonoBehaviour, Moveable
 {
     #region header
 
-    // components
     [Header("components")]
     public Camera cam;
     public NavMeshAgent playerNavMeshAgent = null;
@@ -18,7 +17,6 @@ public class George : MonoBehaviour, Moveable
     [HideInInspector] public Animator anim;
     [HideInInspector] public Selectable selected;
 
-    // variables
     [Header("variables")]
     [HideInInspector] public Vector3 dest;
     [HideInInspector] public List<Collider> unitsInRange = new List<Collider>();

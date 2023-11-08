@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,11 +14,11 @@ public class Selection : MonoBehaviour
     private LinkedList<GameObject> prevSelected = new LinkedList<GameObject>();
     [SerializeField] private RectTransform boxImage;
 
-    private Vector3 selectStart;
-    private Vector3 selectEnd;
+    private Vector3 worldStart;
+    private Vector3 worldEnd;
 
-    private Vector3 startPos;
-    private Vector3 endPos;
+    private Vector3 screenStart;
+    private Vector3 screenEnd;
 
     private bool _aPressed;
     private bool _shiftPressed;
@@ -73,18 +74,22 @@ public class Selection : MonoBehaviour
             _aPressed = true;
             Cursor.SetCursor(AttackCursor, _cursorOffset, CursorMode.Auto);
         }
+
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             SelectEverything();
         }
+
         if (Input.GetKeyDown(KeyCode.R))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+        
         if(Input.GetKeyDown(KeyCode.LeftShift))
         {
             _shiftPressed = true;
         }
+
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             _shiftPressed = false;
@@ -95,6 +100,7 @@ public class Selection : MonoBehaviour
                 i.GetComponent<George>().StopDrawMovementPath();
             }
         }
+
         if (_shiftPressed)
         {
             foreach (GameObject i in prevSelected)
@@ -142,9 +148,9 @@ public class Selection : MonoBehaviour
         ignoreUIMask = ~ignoreUIMask;
 
         // mouse start pos
-        startPos = Input.mousePosition;
-        RaycastHit hit = RaycastMousePosition(ignoreUIMask);
-        selectStart = hit.point;
+        screenStart = Input.mousePosition;
+        RaycastHit hit = RaycastMousePosition(ignoreUIMask, Input.mousePosition);
+        worldStart = hit.point;
 
         // attack move
         if (_aPressed)
@@ -211,42 +217,35 @@ public class Selection : MonoBehaviour
     {
         int ignoreUIMask = 1 << 5;
         ignoreUIMask = ~ignoreUIMask;
-        Collider[] newlySelected;
 
         CreateUIRectangle();
 
         // selector code
-        RaycastHit hit = RaycastMousePosition(ignoreUIMask);
-        selectEnd = hit.point;
+        RaycastHit hit = RaycastMousePosition(ignoreUIMask, Input.mousePosition);
+        worldEnd = hit.point;
 
-        // Selectable layermask (7)
-        int layerMask = 1 << 7;
+        Collider[] newlySelectedV1 = SelectionBox(worldStart, worldEnd);
+        SelectUnitsFromCollider(newlySelectedV1);
+        // calculate selection with other corners of selection box (screen space)
+        // Vector3 newScreenStart = screenStart;
+        // Vector3 newScreenEnd = screenEnd; 
 
-        // midpoint formula, calculate the middle of the selection box
-        Vector3 centerOfOverlap;
-        centerOfOverlap.x = (selectStart.x + selectEnd.x) / 2;
-        centerOfOverlap.y = 0.25f;
-        centerOfOverlap.z = (selectStart.z + selectEnd.z) / 2;
+        // newScreenStart.x = screenEnd.x;
+        // newScreenEnd.x = screenStart.x;
 
-        // half extents 
-        Vector3 halfExtents = (selectStart - selectEnd) / 2;
-        halfExtents.x = Mathf.Abs(halfExtents.x);
-        halfExtents.z = Mathf.Abs(halfExtents.z);
+        // hit = RaycastMousePosition(ignoreUIMask, newScreenStart);
+        // Vector3 newStart = hit.point;
+        // hit = RaycastMousePosition(ignoreUIMask, newScreenEnd);
+        // Vector3 newEnd = hit.point; 
 
-        // spawn overlapbox to detect everything inside of the mouse click/drag
-        newlySelected = Physics.OverlapBox(centerOfOverlap, halfExtents,
-            Quaternion.identity, layerMask);
+        // Collider[] newlySelectedV2 = SelectionBox(newStart, newEnd);
 
-        // add new selected to prev selected
-        foreach (Collider i in newlySelected)
-        {
-            // if not already selected, select it
-            if (!i.gameObject.GetComponent<Selectable>().isSelected)
-            {
-                i.gameObject.GetComponent<Selectable>().isSelected = true;
-                prevSelected.AddLast(i.gameObject);
-            }
-        }
+        // if (ShouldUseNewBox())
+        // {
+        //     Debug.Log("using new");
+        //     SelectUnitsFromCollider(newlySelectedV2);
+        // }
+        // SelectUnitsFromCollider(newlySelectedV1);
     }
 
     #endregion LMB
@@ -263,7 +262,7 @@ public class Selection : MonoBehaviour
 
         // Bit shift the index of the ground layer (8) to get a bit mask
         int layerMask = 1 << 8;
-        RaycastHit hit = RaycastMousePosition(layerMask);
+        RaycastHit hit = RaycastMousePosition(layerMask, Input.mousePosition);
 
         // create the command fx
         CreateCommandFX(hit.point, MoveColor);
@@ -306,6 +305,76 @@ public class Selection : MonoBehaviour
 
 #endregion Update Methods
 
+    private bool ShouldUseNewBox()
+    {
+        // right side of screen
+        if (screenStart.x > Screen.width/2)
+        {
+            // selecting left to right and bottom to top
+            if (screenStart.x < screenEnd.x && screenStart.y < screenEnd.y)
+            {
+                // use other vertices
+                return false;
+            }
+            // selecting right to left and top to bottom
+            if (screenStart.x > screenEnd.x && screenStart.y > screenEnd.y)
+            {
+                // use other vertices
+                return false;
+            }
+        }
+        else // left side of screen
+        {
+            // selecting right to left and bottom to top
+            if (screenStart.x > screenEnd.x && screenStart.y < screenEnd.y)
+            {
+                // use other vertices
+                return false;
+            }
+            // left to right and top to bottom
+            if (screenStart.x < screenEnd.x && screenStart.y > screenEnd.y)
+            {
+                // use other vertices
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void SelectUnitsFromCollider(Collider[] newlySelected)
+    {
+        foreach (Collider i in newlySelected)
+        {
+            // if not already selected, select it
+            if (!i.gameObject.GetComponent<Selectable>().isSelected)
+            {
+                i.gameObject.GetComponent<Selectable>().isSelected = true;
+                prevSelected.AddLast(i.gameObject);
+            }
+        }
+    }
+
+    private Collider[] SelectionBox(Vector3 start, Vector3 end)
+    {
+        // Selectable layermask (7)
+        int layerMask = 1 << 7;
+
+        // midpoint formula, calculate the middle of the selection box
+        Vector3 centerOfOverlap;
+        centerOfOverlap.x = (start.x + end.x) / 2;
+        centerOfOverlap.y = 0.25f;
+        centerOfOverlap.z = (start.z + end.z) / 2;
+
+        // half extents 
+        Vector3 halfExtents = (start - end) / 2;
+        halfExtents.x = Mathf.Abs(halfExtents.x);
+        halfExtents.z = Mathf.Abs(halfExtents.z);
+
+        // spawn overlapbox to detect everything inside of the mouse click/drag
+        return Physics.OverlapBox(centerOfOverlap, halfExtents,
+            Quaternion.identity, layerMask);
+    }
+
     private void CreateUIRectangle()
     {
         // object not already active, make it active
@@ -314,17 +383,17 @@ public class Selection : MonoBehaviour
             boxImage.gameObject.SetActive(true);
         }
 
-        endPos = Input.mousePosition;
+        screenEnd = Input.mousePosition;
 
-        Vector3 boxStart = Camera.main.WorldToScreenPoint(startPos);
+        Vector3 boxStart = Camera.main.WorldToScreenPoint(screenStart);
         boxStart.z = 0f;
 
-        Vector3 center = (startPos + endPos) / 2f;
+        Vector3 center = (screenStart + screenEnd) / 2f;
 
         boxImage.position = center;
 
-        float sizeX = Mathf.Abs(startPos.x - endPos.x);
-        float sizeY = Mathf.Abs(startPos.y - endPos.y);
+        float sizeX = Mathf.Abs(screenStart.x - screenEnd.x);
+        float sizeY = Mathf.Abs(screenStart.y - screenEnd.y);
 
         boxImage.sizeDelta = new Vector2(sizeX, sizeY);
     }
@@ -337,13 +406,13 @@ public class Selection : MonoBehaviour
         tempFX.GetComponent<CommandFX>().CircleColor = FXColor;
     }
 
-    // Raycasts from the mouse position on the screen to a point in the game space
-    private RaycastHit RaycastMousePosition(int layerMask)
+    // Raycasts from position on the screen to a point in the game space
+    private RaycastHit RaycastMousePosition(int layerMask, Vector3 mousePosition)
     {
         RaycastHit hit;
 
         // point in game where player clicks
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        Ray ray = cam.ScreenPointToRay(mousePosition);
 
         if (Physics.Raycast(ray, out hit, 100f, layerMask))
         {
