@@ -226,26 +226,6 @@ public class Selection : MonoBehaviour
 
         Collider[] newlySelectedV1 = SelectionBox(worldStart, worldEnd);
         SelectUnitsFromCollider(newlySelectedV1);
-        // calculate selection with other corners of selection box (screen space)
-        // Vector3 newScreenStart = screenStart;
-        // Vector3 newScreenEnd = screenEnd; 
-
-        // newScreenStart.x = screenEnd.x;
-        // newScreenEnd.x = screenStart.x;
-
-        // hit = RaycastMousePosition(ignoreUIMask, newScreenStart);
-        // Vector3 newStart = hit.point;
-        // hit = RaycastMousePosition(ignoreUIMask, newScreenEnd);
-        // Vector3 newEnd = hit.point; 
-
-        // Collider[] newlySelectedV2 = SelectionBox(newStart, newEnd);
-
-        // if (ShouldUseNewBox())
-        // {
-        //     Debug.Log("using new");
-        //     SelectUnitsFromCollider(newlySelectedV2);
-        // }
-        // SelectUnitsFromCollider(newlySelectedV1);
     }
 
     #endregion LMB
@@ -304,42 +284,6 @@ public class Selection : MonoBehaviour
     }
 
 #endregion Update Methods
-
-    private bool ShouldUseNewBox()
-    {
-        // right side of screen
-        if (screenStart.x > Screen.width/2)
-        {
-            // selecting left to right and bottom to top
-            if (screenStart.x < screenEnd.x && screenStart.y < screenEnd.y)
-            {
-                // use other vertices
-                return false;
-            }
-            // selecting right to left and top to bottom
-            if (screenStart.x > screenEnd.x && screenStart.y > screenEnd.y)
-            {
-                // use other vertices
-                return false;
-            }
-        }
-        else // left side of screen
-        {
-            // selecting right to left and bottom to top
-            if (screenStart.x > screenEnd.x && screenStart.y < screenEnd.y)
-            {
-                // use other vertices
-                return false;
-            }
-            // left to right and top to bottom
-            if (screenStart.x < screenEnd.x && screenStart.y > screenEnd.y)
-            {
-                // use other vertices
-                return false;
-            }
-        }
-        return true;
-    }
 
     private void SelectUnitsFromCollider(Collider[] newlySelected)
     {
