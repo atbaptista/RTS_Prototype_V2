@@ -3,7 +3,9 @@ using UnityEngine;
 public interface Moveable
 {
     public void GoTo();
-    void QueueMovement(Vector3 destination);
-    void ClearMoveQueue();
-    bool isMovingToDest();
+    public void AMove(RaycastHit hit);
+    public void QueueMovement(Vector3 destination);
+    public void ClearMoveQueue();
+    public bool isMovingToDest();
+    
 }

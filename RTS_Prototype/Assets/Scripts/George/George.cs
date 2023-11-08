@@ -83,6 +83,8 @@ public class George : MonoBehaviour, Moveable
         Destroy(this.gameObject, deathDeletionTime);
     }
 
+#region Moveable
+
     public void GoTo()
     {
         dest = MoveQueue.Dequeue();
@@ -98,7 +100,6 @@ public class George : MonoBehaviour, Moveable
     public void QueueMovement(Vector3 destination)
     {
         MoveQueue.Enqueue(destination);
-        print(MoveQueue.Count);
     }
 
     public void ClearMoveQueue()
@@ -124,6 +125,8 @@ public class George : MonoBehaviour, Moveable
             closestEnemy = hit.collider;
         }
     }
+
+#endregion
 
     public void GetEnemiesInRange(ref List<Collider> enemiesList)
     {

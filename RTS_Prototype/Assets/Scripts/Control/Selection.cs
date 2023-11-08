@@ -1,14 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Selection : MonoBehaviour
 {
 
-#region Fields
+    #region Fields
 
     [Header("Selection")]
     private LinkedList<GameObject> prevSelected = new LinkedList<GameObject>();
@@ -37,7 +36,7 @@ public class Selection : MonoBehaviour
 
     [HideInInspector] public bool isPaused = false;
 
-#endregion Fields
+    #endregion Fields
 
     private void Start()
     {
@@ -65,7 +64,7 @@ public class Selection : MonoBehaviour
         RmbMove();
     }
 
-#region Update Methods
+    #region Update Methods
 
     private void Checks()
     {
@@ -84,8 +83,8 @@ public class Selection : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
-        
-        if(Input.GetKeyDown(KeyCode.LeftShift))
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             _shiftPressed = true;
         }
@@ -118,7 +117,7 @@ public class Selection : MonoBehaviour
         }
     }
 
-#region LMB
+    #region LMB
 
     private void Lmb()
     {
@@ -149,61 +148,38 @@ public class Selection : MonoBehaviour
 
         // mouse start pos
         screenStart = Input.mousePosition;
-        RaycastHit hit = RaycastMousePosition(ignoreUIMask, Input.mousePosition);
+        RaycastHit hit = RaycastMousePosition(ignoreUIMask, screenStart);
         worldStart = hit.point;
+
+        bool selectedRobot = hit.collider.CompareTag("MoveObject") && hit.collider.GetComponent<Selectable>().unitType == Selectable.unitTypes.Robot;
 
         // attack move
         if (_aPressed)
         {
-            // create the command fx
-            CreateCommandFX(hit.point, AMoveColor);
-
-            bool isRobot = false;
-            foreach (GameObject i in prevSelected)
-            {
-                if (i.Equals(null))
-                {
-                    continue;
-                }
-                isRobot = i.GetComponent<Selectable>().unitType.Equals(Selectable.unitTypes.Robot);
-                if (isRobot)
-                {
-                    // if ever add different kinds of units move all the amove checks to moveable component
-                    // clear the movement queue, since this will override that 
-                    i.GetComponent<Moveable>().ClearMoveQueue();
-                    i.GetComponent<George>().AMove(hit);
-                }
-            }
+            SetUnitsAMove(hit);
         }
-        // if lmb on robot while not a-moving
-        else if (hit.collider.CompareTag("MoveObject") && hit.collider.GetComponent<Selectable>().unitType == Selectable.unitTypes.Robot)
+        else if (_shiftPressed)
         {
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (!selectedRobot)
             {
-                // append to selected
-                if (!hit.collider.gameObject.GetComponent<Selectable>().isSelected)
-                {
-                    hit.collider.gameObject.GetComponent<Selectable>().isSelected = true;
-                    prevSelected.AddLast(hit.collider.gameObject);
-
-                }
-                // remove from selected
-                else
-                {
-                    hit.collider.gameObject.GetComponent<Selectable>().isSelected = false;
-                    prevSelected.Remove(hit.collider.gameObject);
-                }
+                _aPressed = false;
                 return;
             }
 
-            ClearPrevSelected();
-
-            // if not already selected, select it
-            if (!hit.collider.gameObject.GetComponent<Selectable>().isSelected)
+            // selected robot, append to selected
+            if (!AddGameObjectToSelected(hit.collider.gameObject))
             {
-                hit.collider.gameObject.GetComponent<Selectable>().isSelected = true;
-                prevSelected.AddLast(hit.collider.gameObject);
+                // already in selected, remove from selected
+                hit.collider.gameObject.GetComponent<Selectable>().isSelected = false;
+                prevSelected.Remove(hit.collider.gameObject);
             }
+        }
+        // if lmb on robot while not a-moving
+        else if (selectedRobot)
+        {
+            // if not already selected, select it
+            ClearPrevSelected();
+            AddGameObjectToSelected(hit.collider.gameObject);
         }
         else
         {
@@ -224,8 +200,8 @@ public class Selection : MonoBehaviour
         RaycastHit hit = RaycastMousePosition(ignoreUIMask, Input.mousePosition);
         worldEnd = hit.point;
 
-        Collider[] newlySelectedV1 = SelectionBox(worldStart, worldEnd);
-        SelectUnitsFromCollider(newlySelectedV1);
+        Collider[] newlySelected = SelectionBox(worldStart, worldEnd);
+        SelectUnitsFromCollider(newlySelected);
     }
 
     #endregion LMB
@@ -238,8 +214,6 @@ public class Selection : MonoBehaviour
         }
         _aPressed = false;
 
-        bool isRobot = false;
-
         // Bit shift the index of the ground layer (8) to get a bit mask
         int layerMask = 1 << 8;
         RaycastHit hit = RaycastMousePosition(layerMask, Input.mousePosition);
@@ -249,41 +223,79 @@ public class Selection : MonoBehaviour
 
         foreach (GameObject i in prevSelected)
         {
-            if (i.Equals(null))
-            {
-                continue;
-            }
+            if (i == null) continue;
 
-            // should check if it's Moveable if stationary units are ever added
-            isRobot = i.GetComponent<Selectable>().unitType.Equals(Selectable.unitTypes.Robot);
-            if (isRobot)
+            Selectable selectable = i.GetComponent<Selectable>();
+            Moveable moveable = i.GetComponent<Moveable>();
+
+            if (selectable.unitType.Equals(Selectable.unitTypes.Robot))
             {
-                if (_shiftPressed)
+                // first destination, start moving right away
+                if (_shiftPressed && !moveable.isMovingToDest())
                 {
-                    // first destination, start moving right away
-                    if (!i.GetComponent<Moveable>().isMovingToDest())
-                    {
-                        i.GetComponent<Moveable>().QueueMovement(hit.point);
-                        i.GetComponent<Moveable>().GoTo();
-                    }
-                    else
-                    {
-                        // add location to the move queue 
-                        i.GetComponent<Moveable>().QueueMovement(hit.point);
-                    }
+                    QueueAndGo(moveable, hit.point);
                 }
+                // add location to the move queue 
+                else if (_shiftPressed)
+                {
+                    moveable.QueueMovement(hit.point);
+                    
+                }
+                // clear move queue and move to the location
                 else
                 {
-                    // clear move queue and move to the location
-                    i.GetComponent<Moveable>().ClearMoveQueue();
-                    i.GetComponent<Moveable>().QueueMovement(hit.point);
-                    i.GetComponent<Moveable>().GoTo();
+                    moveable.ClearMoveQueue();
+                    QueueAndGo(moveable, hit.point);
                 }
             }
         }
     }
 
-#endregion Update Methods
+    void QueueAndGo(Moveable moveable, Vector3 point)
+    {
+        moveable.QueueMovement(point);
+        moveable.GoTo();
+    }
+
+    #endregion Update Methods
+
+    /// <summary>
+    /// Adds the given GameObject to the list of selected objects if it is not already selected.
+    /// </summary>
+    /// <param name="gameObject">The GameObject to add to the list of selected objects.</param>
+    /// <returns>False if gameobject was already selected, true otherwise.</returns>
+    private bool AddGameObjectToSelected(GameObject gameObject)
+    {
+        if (!gameObject.GetComponent<Selectable>().isSelected)
+        {
+            gameObject.GetComponent<Selectable>().isSelected = true;
+            prevSelected.AddLast(gameObject);
+            return true;
+        }
+        return false;
+    }
+
+    private void SetUnitsAMove(RaycastHit hit)
+    {
+        // create the command fx
+        CreateCommandFX(hit.point, AMoveColor);
+
+        bool isRobot = false;
+        foreach (GameObject i in prevSelected)
+        {
+            if (i.Equals(null))
+            {
+                continue;
+            }
+            isRobot = i.GetComponent<Selectable>().unitType.Equals(Selectable.unitTypes.Robot);
+            if (isRobot)
+            {
+                // clear the movement queue, since this will override that 
+                i.GetComponent<Moveable>().ClearMoveQueue();
+                i.GetComponent<Moveable>().AMove(hit);
+            }
+        }
+    }
 
     private void SelectUnitsFromCollider(Collider[] newlySelected)
     {
@@ -398,6 +410,6 @@ public class Selection : MonoBehaviour
             }
         }
         prevSelected.Clear();
-    } 
+    }
 
 }
