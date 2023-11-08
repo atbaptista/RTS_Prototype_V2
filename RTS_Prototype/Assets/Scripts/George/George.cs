@@ -43,6 +43,7 @@ public class George : MonoBehaviour, Moveable
     [HideInInspector] public GeorgeAttack attackState;
     [HideInInspector] public GeorgeDie dieState;
     [HideInInspector] public GeorgeAMoveTarget aMoveTargetState;
+    
     #endregion header
 
     void Start()

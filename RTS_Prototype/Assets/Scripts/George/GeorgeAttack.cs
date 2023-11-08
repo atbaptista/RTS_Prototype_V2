@@ -22,10 +22,10 @@ public class GeorgeAttack : IState
     public void Execute()
     {
         //find closest target only if is not commanded to attack one already
-        if (!george.isAMoveOnTarget)
-        {
-            FindClosestEnemy();
-        }
+        // if (!george.isAMoveOnTarget)
+        // {
+        //     FindClosestEnemy();
+        // }
 
 
         //enable or disable the selection circle
@@ -94,8 +94,7 @@ public class GeorgeAttack : IState
 
     private void Attack()
     {
-        //mighjt need a null check if the enemy dies
-        if (george.closestEnemy.GetComponent<Selectable>().health > 0)
+        if (george.closestEnemy != null && george.closestEnemy.GetComponent<Selectable>().health > 0)
         {
             //look at target
             george.transform.LookAt(george.closestEnemy.transform);
