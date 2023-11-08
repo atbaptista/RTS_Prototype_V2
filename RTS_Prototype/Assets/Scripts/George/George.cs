@@ -2,9 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
-using UnityEditor.SearchService;
-using UnityEngine.Experimental.AI;
-using System.IO.Pipes;
 
 public class George : MonoBehaviour, Moveable
 {

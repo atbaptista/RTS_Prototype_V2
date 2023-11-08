@@ -6,7 +6,7 @@
             {
                 "type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                 "key": "buildOutputDirList",
-                "value": "{\"m_Value\":\"E:/unity/Builds/RTS Game Builds/RTS_Prototype_11.3;E:/unity/Builds/RTS Game Builds/RTS_Prototype_11.2;E:/unity/Builds/RTS Game Builds/RTS_Prototype_11.1;E:/unity/Builds/RTS Game Builds/RTS_prototype_10.1.1;E:/unity/Builds/RTS Game Builds/RTS_prototype_10.1;E:/unity/Builds/RTS Game Builds/RTS_prototype_10;E:/unity/Builds/RTS Game Builds/RTS_prototype_9.0 !!!;E:/unity/Builds/RTS Game Builds/RTS_prototype_8.1;E:/unity/Builds/RTS Game Builds/RTS_prototype_8;E:/unity/Builds/RTS Game Builds/RTS_prototype_6\"}"
+                "value": "{\"m_Value\":\"E:/unity/Builds/RTS Game Builds/RTS_Prototype_11.5;E:/unity/Builds/RTS Game Builds/RTS_Prototype_11.3;E:/unity/Builds/RTS Game Builds/RTS_Prototype_11.2;E:/unity/Builds/RTS Game Builds/RTS_Prototype_11.1;E:/unity/Builds/RTS Game Builds/RTS_prototype_10.1.1;E:/unity/Builds/RTS Game Builds/RTS_prototype_10.1;E:/unity/Builds/RTS Game Builds/RTS_prototype_10;E:/unity/Builds/RTS Game Builds/RTS_prototype_9.0 !!!;E:/unity/Builds/RTS Game Builds/RTS_prototype_8.1;E:/unity/Builds/RTS Game Builds/RTS_prototype_8\"}"
             }
         ]
     }
