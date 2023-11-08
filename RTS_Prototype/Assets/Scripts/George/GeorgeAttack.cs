@@ -7,7 +7,7 @@ public class GeorgeAttack : IState
     George george;
     private float lastAttackedAt = -9999f;
 
-    public GeorgeAttack(George george)
+    public GeorgeAttack(in George george)
     {
         this.george = george;
     }
@@ -16,21 +16,16 @@ public class GeorgeAttack : IState
     {
         george.anim.SetBool("doneAttacking", false);
         george.anim.SetTrigger("isAttack");
-        FindClosestEnemy();
+
+        // check if should attack closest enemy or targetted enemy
+        if (!george.isAMoveOnTarget)
+        {
+            FindClosestEnemy();
+        }
     }
 
     public void Execute()
     {
-        //find closest target only if is not commanded to attack one already
-        // if (!george.isAMoveOnTarget)
-        // {
-        //     FindClosestEnemy();
-        // }
-
-
-        //enable or disable the selection circle
-        //george.drawSelectionCircle();
-
         if (george.closestEnemy != null && (Time.time > lastAttackedAt + george.attackSpeed))
         {
             Attack();
@@ -43,20 +38,23 @@ public class GeorgeAttack : IState
         }
         else if (george.closestEnemy.Equals(null) ||
             george.closestEnemy.GetComponent<Selectable>().unitType ==
-            Selectable.unitTypes.Dead) //if thing died
+            Selectable.unitTypes.Dead) // if targetted unit died
         {
             george.georgeMachine.ChangeState(george.idleState);
         }
-        else if (george.isDestSet) //change state if a new destination is input
+        else if (george.isDestSet) // change state if a new destination is input
         {
             george.georgeMachine.ChangeState(george.walkState);
         }
-        else if ((george.transform.position -
-            george.closestEnemy.transform.position).magnitude >
-            george.detectionRadius)
-        { //if out range
-
-            //change to chase state later
+        // if out range
+        else if ((george.transform.position - george.closestEnemy.transform.position).magnitude > george.detectionRadius)
+        { 
+            if (george.isAMoveOnTarget)
+            {
+                george.georgeMachine.ChangeState(george.aMoveTargetState);
+                return;
+            }
+            // george will change to chase state after it switches to idle
             george.georgeMachine.ChangeState(george.idleState);
         }
 
@@ -73,15 +71,15 @@ public class GeorgeAttack : IState
 
     private void FindClosestEnemy()
     {
-        //detection radius is the max distance objects will be, add 10 to get edge cases
+        // detection radius is the max distance objects will be, add 10 to get edge cases
         float closestDistance = george.detectionRadius + 10f;
 
         foreach (Collider i in george.unitsInRange)
         {
-            //check type of unit
+            // check type of unit
             if (i != null && i.GetComponent<Selectable>().unitType.Equals(Selectable.unitTypes.Dinosaur))
             {
-                //find closest dinosaur
+                // find closest dinosaur
                 Vector3 distanceBetwixt = i.transform.position - george.transform.position;
                 if (distanceBetwixt.magnitude < closestDistance)
                 {
@@ -96,14 +94,14 @@ public class GeorgeAttack : IState
     {
         if (george.closestEnemy != null && george.closestEnemy.GetComponent<Selectable>().health > 0)
         {
-            //look at target
+            // look at target
             george.transform.LookAt(george.closestEnemy.transform);
 
-            //shoot target
+            // shoot target
 
             george.closestEnemy.GetComponent<Selectable>().health -= george.basicAttackDmg;
 
-            //make the vector higher up
+            // make the vector higher up
             Vector3 newS = new Vector3(george.transform.position.x, george.transform.position.y + 2f,
                 george.transform.position.z);
             Vector3 newE = new Vector3(george.closestEnemy.transform.position.x,
@@ -116,7 +114,7 @@ public class GeorgeAttack : IState
 
     private void DrawLine(Vector3 start, Vector3 end, float duration = 0.08f)
     {
-        //spawn a point light at the location of the enemy
+        // spawn a point light at the location of the enemy
         GameObject lightObject = new GameObject();
         Light lightComp = lightObject.AddComponent<Light>();
         lightObject.transform.position = george.closestEnemy.transform.position;
@@ -124,7 +122,7 @@ public class GeorgeAttack : IState
         lightComp.intensity = 60f;
         lightComp.range = 10f;
 
-        //make a blue line
+        // make a blue line
         GameObject myLine = new GameObject();
         myLine.transform.position = start;
         myLine.AddComponent<LineRenderer>();

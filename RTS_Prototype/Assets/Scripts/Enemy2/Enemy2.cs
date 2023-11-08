@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class Enemy2 : Enemy
 {
-
     public ParticleSystem ExplosionSystem;
     public float explosionRadius = 6;
 

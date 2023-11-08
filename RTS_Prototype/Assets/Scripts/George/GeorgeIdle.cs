@@ -11,24 +11,12 @@ public class GeorgeIdle : IState
         this.george = george;
     }
 
-    public void Enter()
-    {
-        //update navmesh, animation, isdestset
-        //george.anim.SetBool("isWalking", false);
-        //george.anim.ResetTrigger("doneAttack");
-    }
+    public void Enter(){}
+    public void Exit(){}
 
     public void Execute()
     {
-        //enable or disable the selection circle
-        //george.drawSelectionCircle();
-
         ChooseAction();
-    }
-
-    public void Exit()
-    {
-
     }
 
     private void ChooseAction()
@@ -37,20 +25,23 @@ public class GeorgeIdle : IState
         {
             george.georgeMachine.ChangeState(george.dieState);
         }
-        else if (george.isDestSet) //check if new destination is set
+        // check if new destination is set
+        else if (george.isDestSet) 
         {
             george.georgeMachine.ChangeState(george.walkState);
         }
+        // check if the attack move selected a target
         else if (george.isAMoveOnTarget)
-        { //check if the attack move selected a target
+        { 
             george.georgeMachine.ChangeState(george.aMoveTargetState);
         }
-        else //check if enemies are near
+        // check if enemies are near
+        else 
         {
-            //update the unitsInRange list
+            // update the unitsInRange list
             george.GetEnemiesInRange(ref george.unitsInRange);
 
-            //change state to attack if enemies are detected
+            // change state to attack if enemies are detected
             foreach (Collider i in george.unitsInRange)
             {
                 if (i.GetComponent<Selectable>().unitType.Equals

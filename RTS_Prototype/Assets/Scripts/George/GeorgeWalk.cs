@@ -5,7 +5,6 @@ using UnityEngine;
 public class GeorgeWalk : IState
 {
     George george;
-    private Vector3 prevDest;
 
     public GeorgeWalk(in George george)
     {
@@ -23,9 +22,6 @@ public class GeorgeWalk : IState
 
     public void Execute()
     {
-        //enable or disable the selection circle
-        //george.drawSelectionCircle();
-
         george.playerNavMeshAgent.SetDestination(george.dest);
 
         //calculate vector from pos to destination

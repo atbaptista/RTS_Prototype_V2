@@ -7,7 +7,7 @@ public class GeorgeAMoveTarget : IState
     George george;
     private float _distanceToEnemy;
 
-    public GeorgeAMoveTarget(George george)
+    public GeorgeAMoveTarget(in George george)
     {
         this.george = george;
     }
@@ -17,35 +17,35 @@ public class GeorgeAMoveTarget : IState
         george.isAMoveOnTarget = false;
         george.isAMove = false;
         george.playerNavMeshAgent.isStopped = false;
-        /*        george.playerNavMeshAgent.SetDestination(george.dest);*/
+        /* george.playerNavMeshAgent.SetDestination(george.dest); */
         george.anim.SetBool("isWalking", true);
     }
 
     public void Execute()
     {
-        //check if dead
+        // check if dead
         if (george.selected.health <= 0)
         {
             george.georgeMachine.ChangeState(george.dieState);
             return;
         }
 
-        //change to walk state if new destination is input
+        // change to walk state if new destination is input
         if (george.isDestSet)
         {
             george.georgeMachine.ChangeState(george.walkState);
             return;
         }
 
-        //check if target is dead
+        // check if target is dead
         if (george.closestEnemy == null)
         {
-            //a move to the location of the dead dino
+            // A-move to the location of the dead dino
             george.georgeMachine.ChangeState(george.walkState);
             return;
         }
 
-        //if in range of enemy attack it
+        // if in range of enemy attack it
         _distanceToEnemy = (george.transform.position - george.closestEnemy.transform.position).magnitude;
         if (_distanceToEnemy <= george.detectionRadius)
         {
