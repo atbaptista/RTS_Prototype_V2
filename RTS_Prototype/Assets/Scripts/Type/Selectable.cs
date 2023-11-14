@@ -5,10 +5,53 @@ using UnityEngine;
 public class Selectable : MonoBehaviour
 {
     public bool isSelected = false;
+    public Camera cam;
+    public Selection Selector;
     [HideInInspector] public float health;
     [HideInInspector] public enum unitTypes { Robot, Dinosaur, Dead };
     [HideInInspector] public unitTypes unitType;
 
+    public void DeselectUnit()
+    {
+        Selector.RemoveUnit(this);
+    }
+
+    public bool IsUnitSelected(Vector3 start, Vector3 end)
+    {
+        Vector3 unitPos = cam.WorldToScreenPoint(transform.position);
+        float topY;
+        float bottomY;
+        float rightX;
+        float leftX;
+
+        // start is on left of end
+        if (start.x <= end.x)
+        {
+            rightX = end.x;
+            leftX = start.x;
+        }
+        // start is on right of end
+        else
+        {
+            rightX = start.x;
+            leftX = end.x;
+        }
+
+        // start is below end
+        if (start.y <= end.y)
+        {
+            bottomY = start.y;
+            topY = end.y;
+        }
+        // start is above end
+        else
+        {
+            bottomY = end.y;
+            topY = start.y;
+        }
+
+        return unitPos.x <= rightX && unitPos.x >= leftX && unitPos.y <= topY && unitPos.y >= bottomY;
+    }
 
     public void DrawCircle(GameObject selected, float radius,
         float lineWidth, Color color)
