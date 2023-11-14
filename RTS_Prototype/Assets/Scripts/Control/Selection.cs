@@ -4,17 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Selection : MonoBehaviour
+public class Selection : MonoBehaviour  
 {
 
     #region Fields
 
     [Header("Selection")]
-    private LinkedList<GameObject> prevSelected = new LinkedList<GameObject>();
+    private HashSet<GameObject> selectedUnits = new HashSet<GameObject>();
+    private HashSet<Selectable> allUnits = new HashSet<Selectable>();
     [SerializeField] private RectTransform boxImage;
-
-    private Vector3 worldStart;
-    private Vector3 worldEnd;
 
     private Vector3 screenStart;
     private Vector3 screenEnd;
@@ -38,6 +36,11 @@ public class Selection : MonoBehaviour
 
     #endregion Fields
 
+    public void RemoveUnit(Selectable unit)
+    {
+        allUnits.Remove(unit);
+    }
+
     private void Start()
     {
         // gui stuff
@@ -50,6 +53,19 @@ public class Selection : MonoBehaviour
         // cursor 
         _cursorOffset = new Vector2(SelectCursor.width / 3, SelectCursor.height / 6);
         Cursor.SetCursor(SelectCursor, _cursorOffset, CursorMode.Auto);
+
+        // populate the allUnits hashset
+        foreach (Selectable i in FindObjectsOfType<Selectable>())
+        {
+            if (!i.gameObject.activeInHierarchy)
+            {
+                continue;
+            }
+            if (i.unitType == Selectable.unitTypes.Robot)
+            {
+                allUnits.Add(i);
+            }
+        }
     }
 
     void Update()
@@ -92,7 +108,7 @@ public class Selection : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             _shiftPressed = false;
-            foreach (GameObject i in prevSelected)
+            foreach (GameObject i in selectedUnits)
             {
                 if (i == null)
                     continue;
@@ -102,7 +118,7 @@ public class Selection : MonoBehaviour
 
         if (_shiftPressed)
         {
-            foreach (GameObject i in prevSelected)
+            foreach (GameObject i in selectedUnits)
             {
                 if (i == null)
                     continue;
@@ -149,7 +165,6 @@ public class Selection : MonoBehaviour
         // mouse start pos
         screenStart = Input.mousePosition;
         RaycastHit hit = RaycastMousePosition(ignoreUIMask, screenStart);
-        worldStart = hit.point;
 
         bool selectedRobot = hit.collider.CompareTag("MoveObject") && hit.collider.GetComponent<Selectable>().unitType == Selectable.unitTypes.Robot;
 
@@ -172,37 +187,36 @@ public class Selection : MonoBehaviour
             {
                 // already in selected, remove from selected
                 hit.collider.gameObject.GetComponent<Selectable>().isSelected = false;
-                prevSelected.Remove(hit.collider.gameObject);
+                selectedUnits.Remove(hit.collider.gameObject);
             }
         }
         // if lmb on robot while not a-moving or pressing shift
         else if (selectedRobot)
         {
             // if not already selected, select it
-            ClearPrevSelected();
+            ClearSelectedUnits();
             AddGameObjectToSelected(hit.collider.gameObject);
         }
         else
         {
             // lmb on floor
-            ClearPrevSelected();
+            ClearSelectedUnits();
         }
         _aPressed = false;
     }
 
     private void LmbHeldDown()
     {
-        int ignoreUIMask = 1 << 5;
-        ignoreUIMask = ~ignoreUIMask;
-
         CreateUIRectangle();
 
-        // selector code
-        RaycastHit hit = RaycastMousePosition(ignoreUIMask, Input.mousePosition);
-        worldEnd = hit.point;
-
-        Collider[] newlySelected = SelectionBox(worldStart, worldEnd);
-        SelectUnitsFromCollider(newlySelected);
+        screenEnd = Input.mousePosition;
+        foreach (Selectable unit in allUnits)
+        {
+            if (unit.IsUnitSelected(screenStart, screenEnd))
+            {
+                AddGameObjectToSelected(unit.gameObject);
+            }
+        }
     }
 
     #endregion LMB
@@ -222,7 +236,7 @@ public class Selection : MonoBehaviour
         // create the command fx
         CreateCommandFX(hit.point, MoveColor);
 
-        foreach (GameObject i in prevSelected)
+        foreach (GameObject i in selectedUnits)
         {
             if (i == null) continue;
 
@@ -270,7 +284,7 @@ public class Selection : MonoBehaviour
         if (!gameObject.GetComponent<Selectable>().isSelected)
         {
             gameObject.GetComponent<Selectable>().isSelected = true;
-            prevSelected.AddLast(gameObject);
+            selectedUnits.Add(gameObject);
             return true;
         }
         return false;
@@ -282,7 +296,7 @@ public class Selection : MonoBehaviour
         CreateCommandFX(hit.point, AMoveColor);
 
         bool isRobot = false;
-        foreach (GameObject i in prevSelected)
+        foreach (GameObject i in selectedUnits)
         {
             if (i.Equals(null))
             {
@@ -296,40 +310,6 @@ public class Selection : MonoBehaviour
                 i.GetComponent<Moveable>().AMove(hit);
             }
         }
-    }
-
-    private void SelectUnitsFromCollider(Collider[] newlySelected)
-    {
-        foreach (Collider i in newlySelected)
-        {
-            // if not already selected, select it
-            if (!i.gameObject.GetComponent<Selectable>().isSelected)
-            {
-                i.gameObject.GetComponent<Selectable>().isSelected = true;
-                prevSelected.AddLast(i.gameObject);
-            }
-        }
-    }
-
-    private Collider[] SelectionBox(Vector3 start, Vector3 end)
-    {
-        // Selectable layermask (7)
-        int layerMask = 1 << 7;
-
-        // midpoint formula, calculate the middle of the selection box
-        Vector3 centerOfOverlap;
-        centerOfOverlap.x = (start.x + end.x) / 2;
-        centerOfOverlap.y = 0.25f;
-        centerOfOverlap.z = (start.z + end.z) / 2;
-
-        // half extents 
-        Vector3 halfExtents = (start - end) / 2;
-        halfExtents.x = Mathf.Abs(halfExtents.x);
-        halfExtents.z = Mathf.Abs(halfExtents.z);
-
-        // spawn overlapbox to detect everything inside of the mouse click/drag
-        return Physics.OverlapBox(centerOfOverlap, halfExtents,
-            Quaternion.identity, layerMask);
     }
 
     private void CreateUIRectangle()
@@ -381,36 +361,28 @@ public class Selection : MonoBehaviour
 
     private void SelectEverything()
     {
-        foreach (Selectable i in FindObjectsOfType<Selectable>())
+        foreach (Selectable unit in allUnits)
         {
-            if (!i.gameObject.activeInHierarchy)
-            {
-                continue;
-            }
-            if (i.GetComponent<Selectable>().unitType == Selectable.unitTypes.Robot)
+            if (unit.unitType == Selectable.unitTypes.Robot)
             {
                 // if not already selected, select it
-                if (!i.GetComponent<Selectable>().isSelected)
-                {
-                    i.GetComponent<Selectable>().isSelected = true;
-                    prevSelected.AddLast(i.gameObject);
-                }
+                AddGameObjectToSelected(unit.gameObject);
             }
         }
     }
 
-    private void ClearPrevSelected()
+    private void ClearSelectedUnits()
     {
         // clear previously selected objects
-        for (LinkedListNode<GameObject> node = prevSelected.First; node != null; node = node.Next)
+        foreach (GameObject unit in selectedUnits)
         {
             // null check if enemies die while selected
-            if (!node.Value.Equals(null))
+            if (!unit.Equals(null))
             {
-                node.Value.GetComponent<Selectable>().isSelected = false;
+                unit.GetComponent<Selectable>().isSelected = false;
             }
         }
-        prevSelected.Clear();
+        selectedUnits.Clear();
     }
 
 }

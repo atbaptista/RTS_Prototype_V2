@@ -79,7 +79,8 @@ public class George : MonoBehaviour, Moveable
 
     public void Die()
     {
-        Destroy(this.gameObject, deathDeletionTime);
+        GetComponent<Selectable>().DeselectUnit();
+        Destroy(gameObject, deathDeletionTime);
     }
 
 #region Moveable
