@@ -160,6 +160,7 @@ public class Selection : MonoBehaviour
         }
         else if (_shiftPressed)
         {
+            // check if what player clicked on is a robot
             if (!selectedRobot)
             {
                 _aPressed = false;
@@ -174,7 +175,7 @@ public class Selection : MonoBehaviour
                 prevSelected.Remove(hit.collider.gameObject);
             }
         }
-        // if lmb on robot while not a-moving
+        // if lmb on robot while not a-moving or pressing shift
         else if (selectedRobot)
         {
             // if not already selected, select it

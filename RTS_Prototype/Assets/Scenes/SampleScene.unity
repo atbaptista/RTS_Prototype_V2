@@ -681,6 +681,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: George
       objectReference: {fileID: 0}
+    - target: {fileID: 3960191216209766801, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4193982908876552699, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
       propertyPath: attackSpeed
       value: 0.6
@@ -1703,6 +1707,10 @@ PrefabInstance:
     - target: {fileID: 3960191216209766801, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
       propertyPath: m_Name
       value: George (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3960191216209766801, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4193982908876552699, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
       propertyPath: attackSpeed
@@ -10138,6 +10146,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: George (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 3960191216209766801, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4193982908876552699, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
       propertyPath: attackSpeed
       value: 0.6
@@ -15158,6 +15170,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: George (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 3960191216209766801, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4193982908876552699, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
       propertyPath: attackSpeed
       value: 0.6
@@ -16390,6 +16406,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: George
       objectReference: {fileID: 0}
+    - target: {fileID: 4193982908876552699, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 963194227}
     - target: {fileID: 4193982908876552699, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
       propertyPath: attackSpeed
       value: 0.6
@@ -17970,6 +17990,10 @@ PrefabInstance:
     - target: {fileID: 3960191216209766801, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
       propertyPath: m_Name
       value: George (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3960191216209766801, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4193982908876552699, guid: b2385bcaf00201b4a90785902a4d4630, type: 3}
       propertyPath: attackSpeed
