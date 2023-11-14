@@ -55,6 +55,11 @@ public class UI_Menu : MonoBehaviour
 
     public void Quit()
     {
+        Application.Quit();
+    }
+
+    public void Reset()
+    {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
