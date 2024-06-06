@@ -221,6 +221,8 @@ public class Selection : MonoBehaviour
 
     #endregion LMB
 
+    #region RMB
+
     private void RmbMove()
     {
         if (!Input.GetMouseButtonDown(1))
@@ -266,13 +268,15 @@ public class Selection : MonoBehaviour
         }
     }
 
+    #endregion RMB
+
     void QueueAndGo(Moveable moveable, Vector3 point)
     {
         moveable.QueueMovement(point);
         moveable.GoTo();
     }
 
-    #endregion Update Methods
+    #region Update Method Helpers
 
     /// <summary>
     /// Adds the given GameObject to the list of selected objects if it is not already selected.
@@ -384,5 +388,9 @@ public class Selection : MonoBehaviour
         }
         selectedUnits.Clear();
     }
+
+    #endregion Update Method Helpers
+
+    #endregion Update Methods
 
 }

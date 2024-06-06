@@ -5,7 +5,6 @@ using UnityEngine;
 public class Selectable : MonoBehaviour
 {
     public bool isSelected = false;
-    public Camera cam;
     public Selection Selector;
     [HideInInspector] public float health;
     [HideInInspector] public enum unitTypes { Robot, Dinosaur, Dead };
@@ -18,7 +17,7 @@ public class Selectable : MonoBehaviour
 
     public bool IsUnitSelected(Vector3 start, Vector3 end)
     {
-        Vector3 unitPos = cam.WorldToScreenPoint(transform.position);
+        Vector3 unitPos = Camera.main.WorldToScreenPoint(transform.position);
         float topY;
         float bottomY;
         float rightX;
@@ -50,7 +49,14 @@ public class Selectable : MonoBehaviour
             topY = start.y;
         }
 
-        return unitPos.x <= rightX && unitPos.x >= leftX && unitPos.y <= topY && unitPos.y >= bottomY;
+        // convert from render texture size to screen size, via normalization
+        Vector3 scaledUnitPos = unitPos;
+        scaledUnitPos.x /= 480; // scale by the width of the renderTexture
+        scaledUnitPos.y /= 270; // scale by the height of the renderTexture
+        // "un"-normalize it to screen size
+        scaledUnitPos.x *= Screen.width;
+        scaledUnitPos.y *= Screen.height;
+        return scaledUnitPos.x <= rightX && scaledUnitPos.x >= leftX && scaledUnitPos.y <= topY && scaledUnitPos.y >= bottomY;
     }
 
     public void DrawCircle(GameObject selected, float radius,
